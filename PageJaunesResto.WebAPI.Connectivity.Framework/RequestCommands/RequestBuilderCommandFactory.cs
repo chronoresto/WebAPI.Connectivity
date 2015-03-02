@@ -1,5 +1,7 @@
 using System.Linq;
-using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.HttpRequestCommands;
+using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.NamingStrategies;
+using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestCommands;
+using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestCommands.Http;
 using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.VerbPrefixes;
 
 namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands

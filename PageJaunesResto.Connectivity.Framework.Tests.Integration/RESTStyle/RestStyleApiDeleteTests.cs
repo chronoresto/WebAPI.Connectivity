@@ -2,6 +2,7 @@ using NUnit.Framework;
 using PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle.API;
 using PageJaunesResto.WebAPI.Connectivity.Framework;
 using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands;
+using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.NamingStrategies;
 using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.VerbPrefixes;
 
 namespace PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle

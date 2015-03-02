@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using PageJaunesResto.WebAPI.Connectivity.Framework.Helpers;
 using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands;
+using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.NamingStrategies;
 using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.VerbPrefixes;
 
 namespace PageJaunesResto.WebAPI.Connectivity.Framework

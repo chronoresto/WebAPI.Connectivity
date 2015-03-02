@@ -1,3 +1,5 @@
+using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestCommands;
+
 namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands
 {
     public interface IRequestBuilderCommandFactory

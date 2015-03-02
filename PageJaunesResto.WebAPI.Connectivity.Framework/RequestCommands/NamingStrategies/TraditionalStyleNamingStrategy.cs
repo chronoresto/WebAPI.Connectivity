@@ -1,4 +1,4 @@
-namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands
+namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.NamingStrategies
 {
     public class TraditionalStyleNamingStrategy : IRequestBaseNameStrategy
     {

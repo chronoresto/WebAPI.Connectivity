@@ -38,18 +38,18 @@
   <ItemGroup>
     <Compile Include="IRequestGenerator.cs" />
     <Compile Include="RequestCommands\CommandNotFoundException.cs" />
-    <Compile Include="RequestCommands\HttpRequestCommands\DeleteHttpRequestBuilderCommand.cs" />
-    <Compile Include="RequestCommands\HttpRequestCommands\PostHttpRequestBuilderCommand.cs" />
-    <Compile Include="RequestCommands\HttpRequestCommands\PutHttpRequestBuilderCommand.cs" />
-    <Compile Include="RequestCommands\IRequestBaseNameStrategy.cs" />
-    <Compile Include="RequestCommands\RestStyleNamingStrategy.cs" />
-    <Compile Include="RequestCommands\TraditionalStyleNamingStrategy.cs" />
+    <Compile Include="RequestCommands\RequestCommands\Http\DeleteHttpRequestBuilderCommand.cs" />
+    <Compile Include="RequestCommands\RequestCommands\Http\PostHttpRequestBuilderCommand.cs" />
+    <Compile Include="RequestCommands\RequestCommands\Http\PutHttpRequestBuilderCommand.cs" />
+    <Compile Include="RequestCommands\NamingStrategies\IRequestBaseNameStrategy.cs" />
+    <Compile Include="RequestCommands\NamingStrategies\RestStyleNamingStrategy.cs" />
+    <Compile Include="RequestCommands\NamingStrategies\TraditionalStyleNamingStrategy.cs" />
     <Compile Include="RequestCommands\VerbPrefixes\TraditionServiceDefaultVerbPrefixes.cs" />
     <Compile Include="RequestGenerator.cs" />
     <Compile Include="RequestCommands\VerbPrefixes\DefaultRestVerbPrefixes.cs" />
     <Compile Include="Helpers\ExpressionHelpers.cs" />
-    <Compile Include="RequestCommands\HttpRequestCommands\GetHttpRequestBuilderCommand.cs" />
-    <Compile Include="RequestCommands\IRequestBuilderCommand.cs" />
+    <Compile Include="RequestCommands\RequestCommands\Http\GetHttpRequestBuilderCommand.cs" />
+    <Compile Include="RequestCommands\RequestCommands\IRequestBuilderCommand.cs" />
     <Compile Include="RequestCommands\IRequestBuilderCommandFactory.cs" />
     <Compile Include="RequestCommands\VerbPrefixes\IVerbPrefixes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,6 +67,7 @@
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
