@@ -11,7 +11,7 @@ Given a sample piece of code as below
 ```csharp
     interface IITestInterface
     {
-        TestObjectShape GetItems();
+        TestObjectShape Get();
         TestObjectShape GetItemsWithLoadsOfParams(string a, int b);
         TestObjectShape SetItems();
     }
@@ -31,9 +31,18 @@ Given a sample piece of code as below
 You simply pass in an expression to the RequestGenerator, with the baseUrl for your API service, and an expression containing the method and parameters that you'd like to execute, or make a request to be deserialized. (note, all service calls are async, and as such require to be awaited.)
 
 ```csharp
-  TestObjectShape result = await new RequestGenerator("http://www.chronoresto.fr/API/?key=12345")
-                .InterfaceAndMethodToRequest<IITestInterface>(x => x.GetItemsWithLoadsOfParams("hello", 123));
+  TestObjectShape result = await new RequestGenerator("http://www.chronoresto.fr/API/")
+                .InterfaceAndMethodToRequest<IITestInterface, IEnumerable<TestObjectShape>>(x => x.GetItemsWithLoadsOfParams("hello", 123));
 ```
-In this scenario, this will create task for a GET request, to the effect of "http://www.chronoresto.fr/API/Test/GetItemsWithLoadsOfParams/?key=12345&a=hello&b=123", and deserialize it into a `TestObject` - all ready to be `awaited`.
+In this scenario, this will create task for a GET request, to the effect of "http://www.chronoresto.fr/API/TestInterface/?key=12345&a=hello&b=123", and deserialize it into a collection of `TestObject` - all ready to be `awaited`.
 
-As it happens for us, we keep the Get prefix, but all this sort of stuff can be easily switched out for whatever strategy works for you - documentation for how on this to come!
+
+```csharp
+  TestObjectShape result = await new RequestGenerator("http://www.chronoresto.fr/API/")
+                .InterfaceAndMethodToRequest<IITestInterface, TestObjectShape>(x => x.Get());
+```
+
+In this scenario, this will create task for a GET request, to the effect of "http://www.chronoresto.fr/API/TestInterface/", and deserialize it into a `TestObject` - all ready to be `awaited`.
+
+
+With the strategy here, we keep the requests in the standard REST-style API conventions. Other strategies to apply this API to a wider variety of scenarios are coming soon.
