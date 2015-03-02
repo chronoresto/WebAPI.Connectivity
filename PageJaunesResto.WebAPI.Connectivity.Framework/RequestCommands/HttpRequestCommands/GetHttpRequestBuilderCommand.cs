@@ -23,12 +23,21 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.HttpRequ
             Uri uri = new Uri(url);
 
             // TODO : Add method name
+            uri = new Uri(uri, _methodName.ToLower() + "/");
 
             if (parameters.Any())
                 uri = UriBuildingHelpers.AttachParameters(uri, parameters);
 
             var result = await request.GetStringAsync(uri);
-            return JsonConvert.DeserializeObject<TReturnType>(result);
+            try
+            {
+                return JsonConvert.DeserializeObject<TReturnType>(result);
+            }
+            catch (JsonSerializationException)
+            {
+                // retry as an array 
+                return JsonConvert.DeserializeObject<IEnumerable<TReturnType>>(result).First();
+            }
         }
 
         public async Task BuildRequest(string url, params KeyValuePair<string, string>[] parameters)

@@ -26,6 +26,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.HttpRequ
                 uri = UriBuildingHelpers.AttachParameters(uri, parameters);
 
             var result = await request.DeleteAsync(uri);
+
             return JsonConvert.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
         }
 

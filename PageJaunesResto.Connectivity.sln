@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageJaunesResto.WebAPI.Conn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests", "PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests\PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests.csproj", "{EB761A7D-3B0B-4709-A48F-E732F2AB8B9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageJaunesResto.Connectivity.Framework.Tests.Integration", "PageJaunesResto.Connectivity.Framework.Tests.Integration\PageJaunesResto.Connectivity.Framework.Tests.Integration.csproj", "{9FFB1550-F230-4BD2-BD2C-B8AF6DE327E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{EB761A7D-3B0B-4709-A48F-E732F2AB8B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB761A7D-3B0B-4709-A48F-E732F2AB8B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB761A7D-3B0B-4709-A48F-E732F2AB8B9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FFB1550-F230-4BD2-BD2C-B8AF6DE327E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FFB1550-F230-4BD2-BD2C-B8AF6DE327E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FFB1550-F230-4BD2-BD2C-B8AF6DE327E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FFB1550-F230-4BD2-BD2C-B8AF6DE327E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
