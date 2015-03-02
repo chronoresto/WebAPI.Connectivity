@@ -28,6 +28,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
         {
             var methodBody = ((MethodCallExpression)action.Body);
             var methodName = methodBody.GetMethodName();
+            var className = typeof (T).Name;
 
             var paramsToPass = methodBody.GetKeyValuePairsFromParametersInMethodCallExpression();
 

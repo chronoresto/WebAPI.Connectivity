@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="RequestCommands\CommandNotFoundException.cs" />
     <Compile Include="RequestCommands\HttpRequestCommands\DeleteHttpRequestBuilderCommand.cs" />
     <Compile Include="RequestCommands\HttpRequestCommands\PostHttpRequestBuilderCommand.cs" />
     <Compile Include="RequestCommands\HttpRequestCommands\PutHttpRequestBuilderCommand.cs" />

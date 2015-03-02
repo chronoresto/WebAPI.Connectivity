@@ -10,6 +10,13 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.HttpRequ
 {
     public class DeleteHttpRequestBuilderCommand : IRequestBuilderCommand
     {
+        private readonly string _methodName;
+
+        public DeleteHttpRequestBuilderCommand(string methodName)
+        {
+            _methodName = methodName;
+        }
+
         public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, string>[] parameters)
         {
             var request = new HttpClient();

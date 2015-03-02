@@ -3,5 +3,9 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.VerbPref
     public interface IVerbPrefixes
     {
         string GetGetPrefix();
+        string GetDeletePrefix();
+        string GetPostPrefix();
+        string GetPutPrefix();
+
     }
 }
