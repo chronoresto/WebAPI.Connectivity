@@ -9,12 +9,4 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands
             return className;
         }
     }
-
-    public class TraditionalStyleNamingStrategy : IRequestBaseNameStrategy
-    {
-        public string GetBaseName(string className, string methodName)
-        {
-            return className + "/" + methodName + "/";
-        }
-    }
 }

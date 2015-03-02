@@ -36,12 +36,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IRequestGenerator.cs" />
     <Compile Include="RequestCommands\CommandNotFoundException.cs" />
     <Compile Include="RequestCommands\HttpRequestCommands\DeleteHttpRequestBuilderCommand.cs" />
     <Compile Include="RequestCommands\HttpRequestCommands\PostHttpRequestBuilderCommand.cs" />
     <Compile Include="RequestCommands\HttpRequestCommands\PutHttpRequestBuilderCommand.cs" />
+    <Compile Include="RequestCommands\IRequestBaseNameStrategy.cs" />
+    <Compile Include="RequestCommands\RestStyleNamingStrategy.cs" />
+    <Compile Include="RequestCommands\TraditionalStyleNamingStrategy.cs" />
+    <Compile Include="RequestCommands\VerbPrefixes\TraditionServiceDefaultVerbPrefixes.cs" />
     <Compile Include="RequestGenerator.cs" />
-    <Compile Include="RequestCommands\VerbPrefixes\DefaultVerbPrefixes.cs" />
+    <Compile Include="RequestCommands\VerbPrefixes\DefaultRestVerbPrefixes.cs" />
     <Compile Include="Helpers\ExpressionHelpers.cs" />
     <Compile Include="RequestCommands\HttpRequestCommands\GetHttpRequestBuilderCommand.cs" />
     <Compile Include="RequestCommands\IRequestBuilderCommand.cs" />

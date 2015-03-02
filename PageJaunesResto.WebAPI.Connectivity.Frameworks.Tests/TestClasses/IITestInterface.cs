@@ -1,4 +1,4 @@
-namespace PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests
+namespace PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests.TestClasses
 {
     interface IITestInterface
     {

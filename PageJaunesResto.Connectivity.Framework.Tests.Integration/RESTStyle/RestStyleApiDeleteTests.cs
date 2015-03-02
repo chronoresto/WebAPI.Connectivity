@@ -1,0 +1,23 @@
+using NUnit.Framework;
+using PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle.API;
+using PageJaunesResto.WebAPI.Connectivity.Framework;
+using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands;
+using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.VerbPrefixes;
+
+namespace PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle
+{
+    [TestFixture]
+    public class RestStyleApiDeleteTests
+    {
+        [Test]
+        public async void try_delete_request_without_parameter()
+        {
+            // arrange
+            const string baseUri = "http://jsonplaceholder.typicode.com/";
+
+            // act
+            await new RequestGenerator(baseUri, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
+                .InterfaceAndMethodToRequest<IPosts>(x => x.Delete());
+        }
+    }
+}

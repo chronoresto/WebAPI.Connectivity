@@ -15,7 +15,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
         private readonly IRequestBuilderCommandFactory _requestBuilderCommandFactory;
 
         public RequestGenerator(string baseUrl)
-            : this(baseUrl, new RequestBuilderCommandFactory(new DefaultVerbPrefixes(), new RestStyleNamingStrategy()))
+            : this(baseUrl, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
         {
         }
 
@@ -54,11 +54,5 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
 
             await requestBuilder.BuildRequest(_baseUrl, paramsToPass.ToArray());
         }
-    }
-
-    public interface IRequestGenerator
-    {
-        Task<TReturnType> InterfaceAndMethodToRequest<T, TReturnType>(Expression<Func<T, TReturnType>> action);
-        Task InterfaceAndMethodToRequest<T>(Expression<Action<T>> action);
     }
 }

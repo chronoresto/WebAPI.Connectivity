@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests
+﻿namespace PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests.TestClasses
 {
     internal class TestObjectShape
     {

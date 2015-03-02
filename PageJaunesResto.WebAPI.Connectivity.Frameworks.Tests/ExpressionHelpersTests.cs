@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using NUnit.Framework;
 using PageJaunesResto.WebAPI.Connectivity.Framework;
 using PageJaunesResto.WebAPI.Connectivity.Framework.Helpers;
+using PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests.TestClasses;
 
 namespace PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests
 {
