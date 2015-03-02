@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Connectivity layer for any API</description>
+    <releaseNotes>Initial formation of connectivity layer</releaseNotes>
+    <copyright>Copyright Chronoresto 2015</copyright>
+    <tags>csharp webapi rest</tags>
+  </metadata>
+</package>

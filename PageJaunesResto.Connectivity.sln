@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D8DB7167-FF99-4D32-8966-97A5239CE6F7}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageJaunesResto.WebAPI.Connectivity.Framework", "PageJaunesResto.WebAPI.Connectivity.Framework\PageJaunesResto.WebAPI.Connectivity.Framework.csproj", "{55FB8D65-D4DA-4976-9EB2-7EA6103F196F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests", "PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests\PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests.csproj", "{EB761A7D-3B0B-4709-A48F-E732F2AB8B9F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55FB8D65-D4DA-4976-9EB2-7EA6103F196F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55FB8D65-D4DA-4976-9EB2-7EA6103F196F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55FB8D65-D4DA-4976-9EB2-7EA6103F196F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55FB8D65-D4DA-4976-9EB2-7EA6103F196F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB761A7D-3B0B-4709-A48F-E732F2AB8B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB761A7D-3B0B-4709-A48F-E732F2AB8B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB761A7D-3B0B-4709-A48F-E732F2AB8B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB761A7D-3B0B-4709-A48F-E732F2AB8B9F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
