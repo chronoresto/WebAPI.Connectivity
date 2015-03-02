@@ -5,6 +5,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="className"></param>
         /// <param name="methodName"></param>
         /// <exception cref="CommandNotFoundException">If no command found matching methodName, throw CommandNotFoundException</exception>
         /// <returns></returns>
