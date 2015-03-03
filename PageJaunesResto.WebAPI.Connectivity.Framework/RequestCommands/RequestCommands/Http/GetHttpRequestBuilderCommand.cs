@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Newtonsoft.Json;
 using PageJaunesResto.WebAPI.Connectivity.Framework.Helpers;
 
@@ -29,6 +31,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
                 uri = UriBuildingHelpers.AttachParameters(uri, parameters);
 
             var result = await request.GetStringAsync(uri);
+            Debug.WriteLine(uri.ToString() + "\r\n " + parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
             try
             {
                 return JsonConvert.DeserializeObject<TReturnType>(result);
@@ -50,6 +53,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             if (parameters.Any())
                 uri = UriBuildingHelpers.AttachParameters(uri, parameters);
 
+            Debug.WriteLine(uri.ToString() + "\r\n " + parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
             await request.GetStringAsync(uri);
         }
 
