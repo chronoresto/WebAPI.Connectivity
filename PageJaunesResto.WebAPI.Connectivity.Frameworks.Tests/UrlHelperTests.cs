@@ -21,5 +21,19 @@ namespace PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests
             // Assert
             Assert.That(result.ToString(), Is.EqualTo("http://www.chronoresto.fr/?food=lovely&code=this"));
         }
+
+        [Test]
+        public void given_some_parameters_of_which_some_are_null_correct_url_built()
+        {
+            // Arrange 
+            var uri = new Uri("http://www.chronoresto.fr/");
+
+            // Act
+            var result = UriBuildingHelpers.AttachParameters(uri, new KeyValuePair<string, string>("food", ""),
+                new KeyValuePair<string, string>("code", "this"));
+
+            // Assert
+            Assert.That(result.ToString(), Is.EqualTo("http://www.chronoresto.fr/?code=this"));
+        }
     }
 }

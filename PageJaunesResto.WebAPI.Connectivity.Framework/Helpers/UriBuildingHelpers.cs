@@ -13,8 +13,11 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.Helpers
             string str = "?";
             for (int index = 0; index < parameters.Count(); ++index)
             {
-                stringBuilder.Append(str + parameters.ElementAt(index).Key + "=" + parameters.ElementAt(index).Value);
-                str = "&";
+                if (!string.IsNullOrWhiteSpace(parameters.ElementAt(index).Value))
+                {
+                    stringBuilder.Append(str + parameters.ElementAt(index).Key + "=" + parameters.ElementAt(index).Value);
+                    str = "&";
+                }
             }
             return new Uri(uri + stringBuilder.ToString());
         }
