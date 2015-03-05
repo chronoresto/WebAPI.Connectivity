@@ -24,14 +24,15 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             var request = new HttpClient();
             Uri uri = new Uri(url);
 
-            // TODO : Add method name
-            uri = new Uri(uri, _methodName.ToLower() + "/");
+            uri = new Uri(uri + _methodName.ToLower());
 
             if (parameters.Any())
                 uri = UriBuildingHelpers.AttachParameters(uri, parameters);
 
-            var result = await request.GetStringAsync(uri);
+
             Debug.WriteLine(uri.ToString() + "\r\n " + parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
+            var result = await request.GetStringAsync(uri);
+            Debug.WriteLine(uri.ToString() + "SUCCESS \r\n " + parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
             try
             {
                 return JsonConvert.DeserializeObject<TReturnType>(result);

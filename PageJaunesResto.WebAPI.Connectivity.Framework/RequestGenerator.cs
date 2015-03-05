@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -13,16 +14,18 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
     public class RequestGenerator : IRequestGenerator
     {
         private readonly string _baseUrl;
+        private readonly IEnumerable<KeyValuePair<string, string>> _defaultParams;
         private readonly IRequestBuilderCommandFactory _requestBuilderCommandFactory;
 
         public RequestGenerator(string baseUrl)
-            : this(baseUrl, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
+            : this(baseUrl, new List<KeyValuePair<string, string>>(), new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
         {
         }
 
-        public RequestGenerator(string baseUrl, IRequestBuilderCommandFactory requestBuilderCommandFactory)
+        public RequestGenerator(string baseUrl, IEnumerable<KeyValuePair<string, string>> defaultParams, IRequestBuilderCommandFactory requestBuilderCommandFactory)
         {
             _baseUrl = baseUrl;
+            _defaultParams = defaultParams;
             _requestBuilderCommandFactory = requestBuilderCommandFactory;
         }
 
@@ -38,7 +41,10 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
 
             var requestBuilder = _requestBuilderCommandFactory.GetRequestBuilderCommand(className, methodName);
 
-            return await requestBuilder.BuildRequest<TReturnType>(_baseUrl, paramsToPass.ToArray());
+            var paramsToGo = _defaultParams.ToList();
+            paramsToGo.AddRange(paramsToPass);
+
+            return await requestBuilder.BuildRequest<TReturnType>(_baseUrl, paramsToGo.ToArray());
         }
 
         public async Task InterfaceAndMethodToRequest<T>(Expression<Action<T>> action)
@@ -53,7 +59,10 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
 
             var requestBuilder = _requestBuilderCommandFactory.GetRequestBuilderCommand(className, methodName);
 
-            await requestBuilder.BuildRequest(_baseUrl, paramsToPass.ToArray());
+            var paramsToGo = _defaultParams.ToList();
+            paramsToGo.AddRange(paramsToPass);
+
+            await requestBuilder.BuildRequest(_baseUrl, paramsToGo.ToArray());
         }
     }
 }

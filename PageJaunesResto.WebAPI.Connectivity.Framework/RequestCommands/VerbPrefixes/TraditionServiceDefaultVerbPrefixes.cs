@@ -13,7 +13,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.VerbPref
         // We are insane apparently.
         public IEnumerable<string> GetGetPrefixs()
         {
-            return new[] { "Get", "Search", "Find", "Confirm", "Clone", "Recover", "Validate", "Fidelity", "Convert" };
+            return new[] { "Get", "Search", "Find", "Confirm", "Clone", "Recover", "Validate", "Fidelity", "Convert", "Json" };
         }
 
         public IEnumerable<string> GetDeletePrefixs()
