@@ -19,7 +19,7 @@ namespace PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle
             const string baseUri = "http://jsonplaceholder.typicode.com/";
 
             // act
-            var result = await new RequestGenerator(baseUri, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
+            var result = await new RequestGenerator(baseUri, new[] { new KeyValuePair<string, object>() }, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
                                                         .InterfaceAndMethodToRequest<IPosts, IEnumerable<Post>>(x => x.Get());
 
            // assert
@@ -33,7 +33,7 @@ namespace PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle
             const string baseUri = "http://jsonplaceholder.typicode.com/";
 
             // act
-            var result = await new RequestGenerator(baseUri, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
+            var result = await new RequestGenerator(baseUri, new[] { new KeyValuePair<string, object>() }, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
                                                         .InterfaceAndMethodToRequest<IPosts, Post>(x => x.Get(1));
 
             // assert
