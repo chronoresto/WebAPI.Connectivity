@@ -17,26 +17,26 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             _methodName = methodName;
         }
 
-        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, string>[] parameters)
+        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
         {
             var request = new HttpClient();
             Uri uri = new Uri(url);
 
             if (parameters.Any())
-                uri = UriBuildingHelpers.AttachParameters(uri, parameters);
+                uri = UriBuildingHelpers.AttachParameters(uri, parameters.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
 
             var result = await request.DeleteAsync(uri);
 
             return JsonConvert.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
         }
 
-        public async Task BuildRequest(string url, params KeyValuePair<string, string>[] parameters)
+        public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)
         {
             var request = new HttpClient();
             Uri uri = new Uri(url);
 
             if (parameters.Any())
-                uri = UriBuildingHelpers.AttachParameters(uri, parameters);
+                uri = UriBuildingHelpers.AttachParameters(uri, parameters.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
 
             await request.DeleteAsync(uri);
         }

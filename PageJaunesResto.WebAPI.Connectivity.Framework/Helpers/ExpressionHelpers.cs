@@ -11,9 +11,9 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.Helpers
             return expression.Method.Name;
         }
 
-        public static IEnumerable<KeyValuePair<string, string>> GetKeyValuePairsFromParametersInMethodCallExpression(this MethodCallExpression expression)
+        public static IEnumerable<KeyValuePair<string, object>> GetKeyValuePairsFromParametersInMethodCallExpression(this MethodCallExpression expression)
         {
-            var list = new List<KeyValuePair<string, string>>();
+            var list = new List<KeyValuePair<string, object>>();
             var paramLength = expression.Method.GetParameters().Length;
             for (int index = 0; index < paramLength; index++)
             {
@@ -26,11 +26,11 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.Helpers
                 if (name != null)
                     key = name.Name;
 
-                var value = "";
+                object value = null;
                 if (paramValue != null)
-                    value = paramValue.ToString();
+                    value = paramValue;
                     
-                list.Add(new KeyValuePair<string, string>(key, value));
+                list.Add(new KeyValuePair<string, object>(key, value));
             }
 
             return list;

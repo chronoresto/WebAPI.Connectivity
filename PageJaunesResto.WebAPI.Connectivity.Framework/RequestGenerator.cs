@@ -14,15 +14,15 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
     public class RequestGenerator : IRequestGenerator
     {
         private readonly string _baseUrl;
-        private readonly IEnumerable<KeyValuePair<string, string>> _defaultParams;
+        private readonly IEnumerable<KeyValuePair<string, object>> _defaultParams;
         private readonly IRequestBuilderCommandFactory _requestBuilderCommandFactory;
 
         public RequestGenerator(string baseUrl)
-            : this(baseUrl, new List<KeyValuePair<string, string>>(), new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
+            : this(baseUrl, new List<KeyValuePair<string, object>>(), new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
         {
         }
 
-        public RequestGenerator(string baseUrl, IEnumerable<KeyValuePair<string, string>> defaultParams, IRequestBuilderCommandFactory requestBuilderCommandFactory)
+        public RequestGenerator(string baseUrl, IEnumerable<KeyValuePair<string, object>> defaultParams, IRequestBuilderCommandFactory requestBuilderCommandFactory)
         {
             _baseUrl = baseUrl;
             _defaultParams = defaultParams;

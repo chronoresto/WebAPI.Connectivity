@@ -19,20 +19,9 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             _methodName = methodName;
         }
 
-        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, string>[] parameters)
+        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
         {
-            var request = new HttpClient();
-            Uri uri = new Uri(url);
-
-            uri = new Uri(uri + _methodName.ToLower());
-
-            if (parameters.Any())
-                uri = UriBuildingHelpers.AttachParameters(uri, parameters);
-
-
-            Debug.WriteLine(uri.ToString() + "\r\n " + parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
-            var result = await request.GetStringAsync(uri);
-            Debug.WriteLine(uri.ToString() + "SUCCESS \r\n " + parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
+            var result = await DoGet(url, parameters);
             try
             {
                 return JsonConvert.DeserializeObject<TReturnType>(result);
@@ -44,18 +33,32 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             }
         }
 
-        public async Task BuildRequest(string url, params KeyValuePair<string, string>[] parameters)
+        public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)
+        {
+            await DoGet(url, parameters);
+        }
+
+        private async Task<string> DoGet(string url, KeyValuePair<string, object>[] parameters)
         {
             var request = new HttpClient();
             Uri uri = new Uri(url);
 
-            // TODO : Add method name
+            uri = new Uri(uri + _methodName.ToLower());
 
             if (parameters.Any())
-                uri = UriBuildingHelpers.AttachParameters(uri, parameters);
+                uri = UriBuildingHelpers.AttachParameters(uri,
+                    parameters.Select(
+                        x => new KeyValuePair<string, string>(x.Key, UriBuildingHelpers.SimpleTypeToString(x)))
+                        .ToArray());
 
-            Debug.WriteLine(uri.ToString() + "\r\n " + parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
-            await request.GetStringAsync(uri);
+
+            Debug.WriteLine(uri.ToString() + "\r\n " +
+                            parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
+            var result = await request.GetStringAsync(uri);
+            Debug.WriteLine(uri.ToString() + "SUCCESS \r\n " +
+                            parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
+
+            return result;
         }
 
     }

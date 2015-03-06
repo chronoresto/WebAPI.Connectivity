@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
+using PageJaunesResto.WebAPI.Connectivity.Framework.Helpers;
 
 namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestCommands.Http
 {
@@ -15,25 +18,38 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             _methodName = methodName;
         }
 
-        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, string>[] parameters)
+        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
         {
-            var request = new HttpClient();
-            Uri uri = new Uri(url);
+            var result = await MakeRequest(url, parameters);
 
-            var content = new FormUrlEncodedContent(parameters);
-
-            var result = await request.PutAsync(uri, content);
             return JsonConvert.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
         }
 
-        public async Task BuildRequest(string url, params KeyValuePair<string, string>[] parameters)
+        public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)
+        {
+            await MakeRequest(url, parameters);
+        }
+
+
+        private async Task<HttpResponseMessage> MakeRequest(string url, KeyValuePair<string, object>[] parameters)
         {
             var request = new HttpClient();
             Uri uri = new Uri(url);
 
-            var content = new FormUrlEncodedContent(parameters);
+            uri = new Uri(uri + _methodName.ToLower());
 
-            await request.PutAsync(uri, content);
+
+            if (parameters.Any())
+                uri = UriBuildingHelpers.AttachParameters(uri,
+                    parameters.Where(x => x.Value is string || x.Value is Guid || x.Value is int)
+                        .Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
+
+            var postItem = parameters.First(x => !(x.Value is string || x.Value is Guid || x.Value is int));
+
+            var content =
+                new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>(postItem.Key, JsonConvert.SerializeObject(postItem.Value)) });
+
+            return await request.PutAsync(uri, content);
         }
     }
 }

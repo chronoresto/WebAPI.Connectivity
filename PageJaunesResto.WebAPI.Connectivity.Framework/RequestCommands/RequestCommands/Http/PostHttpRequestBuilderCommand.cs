@@ -1,8 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Net.Http;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Newtonsoft.Json;
+using PageJaunesResto.WebAPI.Connectivity.Framework.Helpers;
 
 namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestCommands.Http
 {
@@ -15,25 +21,37 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             _methodName = methodName;
         }
 
-        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, string>[] parameters)
+        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
         {
-            var request = new HttpClient();
-            Uri uri = new Uri(url);
+            var result = await MakeRequest(url, parameters);
 
-            var content = new FormUrlEncodedContent(parameters);
-
-            var result = await request.PostAsync(uri, content);
             return JsonConvert.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
         }
 
-        public async Task BuildRequest(string url, params KeyValuePair<string, string>[] parameters)
+        public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)
+        {
+            await MakeRequest(url, parameters);
+        }
+
+        private async Task<HttpResponseMessage> MakeRequest(string url, KeyValuePair<string, object>[] parameters)
         {
             var request = new HttpClient();
             Uri uri = new Uri(url);
 
-            var content = new FormUrlEncodedContent(parameters);
+            uri = new Uri(uri + _methodName.ToLower());
 
-            await request.PostAsync(uri, content);
+
+            if (parameters.Any())
+                uri = UriBuildingHelpers.AttachParameters(uri,
+                    parameters.Where(UriBuildingHelpers.IsSimpleType)
+                        .Select(x => new KeyValuePair<string, string>(x.Key, UriBuildingHelpers.SimpleTypeToString(x))).ToArray());
+
+            var postItem = parameters.First(x => !UriBuildingHelpers.IsSimpleType(x));
+
+            var content = new StringContent(JsonConvert.SerializeObject(postItem.Value), Encoding.UTF8, "application/json");
+
+            return await request.PostAsync(uri, content);
         }
+
     }
 }
