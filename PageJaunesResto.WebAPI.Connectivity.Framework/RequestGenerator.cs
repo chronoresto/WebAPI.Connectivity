@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using PageJaunesResto.WebAPI.Connectivity.Framework.Helpers;
 using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands;
 using PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.NamingStrategies;
@@ -18,7 +22,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
         private readonly IRequestBuilderCommandFactory _requestBuilderCommandFactory;
 
         public RequestGenerator(string baseUrl)
-            : this(baseUrl, new List<KeyValuePair<string, object>>(), new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
+            : this(baseUrl, new List<KeyValuePair<string, object>>(), new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy(), new JsonRequestSerializer()))
         {
         }
 
@@ -34,7 +38,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
             var methodBody = ((MethodCallExpression)action.Body);
 
             var methodName = methodBody.GetMethodName();
-            var typeOfT = typeof (T);
+            var typeOfT = typeof(T);
             var className = typeOfT.GetTypeInfo().IsInterface ? typeOfT.Name.Remove(0, 1) : typeOfT.Name;
 
             var paramsToPass = methodBody.GetKeyValuePairsFromParametersInMethodCallExpression();
@@ -64,5 +68,67 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
 
             await requestBuilder.BuildRequest(_baseUrl, paramsToGo.ToArray());
         }
+    }
+
+    public class JsonRequestSerializer : IRequestSerializer
+    {
+        public T DeserializeObject<T>(string data)
+        {
+            return JsonConvert.DeserializeObject<T>(data);
+        }
+
+        public string SerializeObject(object data)
+        {
+            return JsonConvert.SerializeObject(data);
+        }
+    }
+
+    public class XmlRequestSerializer : IRequestSerializer
+    {
+        public T DeserializeObject<T>(string data)
+        {
+            var serializer = new XmlSerializer(typeof(T));
+            using (var s = GenerateStreamFromString(data))
+            {
+                var reader = new StreamReader(s);
+
+                return (T)serializer.Deserialize(reader);
+            }
+        }
+
+        public string SerializeObject(object data)
+        {
+            return Serialize(data);
+        }
+
+        public Stream GenerateStreamFromString(string s)
+        {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
+
+        public string Serialize(object obj)
+        {
+            using (var stream = new MemoryStream())
+            {
+                var serializer = new XmlSerializer(obj.GetType());
+                serializer.Serialize(stream, obj);
+                var bytes = new byte[stream.Length];
+                stream.Position = 0;
+                stream.Read(bytes, 0, bytes.Length);
+
+                return Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+            }
+        }
+    }
+
+    public interface IRequestSerializer
+    {
+        string SerializeObject(object data);
+        T DeserializeObject<T>(string data);
     }
 }

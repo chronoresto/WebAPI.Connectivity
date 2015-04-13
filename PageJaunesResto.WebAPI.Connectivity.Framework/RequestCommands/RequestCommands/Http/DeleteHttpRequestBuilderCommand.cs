@@ -11,10 +11,12 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
     public class DeleteHttpRequestBuilderCommand : IRequestBuilderCommand
     {
         private readonly string _methodName;
+        private readonly IRequestSerializer _requestSerializer;
 
-        public DeleteHttpRequestBuilderCommand(string methodName)
+        public DeleteHttpRequestBuilderCommand(string methodName, IRequestSerializer requestSerializer)
         {
             _methodName = methodName;
+            _requestSerializer = requestSerializer;
         }
 
         public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
@@ -29,7 +31,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
 
             var result = await request.DeleteAsync(uri);
 
-            return JsonConvert.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
+            return _requestSerializer.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
         }
 
         public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)

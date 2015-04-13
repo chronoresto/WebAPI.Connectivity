@@ -13,10 +13,12 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
     public class GetHttpRequestBuilderCommand : IRequestBuilderCommand
     {
         private readonly string _methodName;
+        private readonly IRequestSerializer _requestSerializer;
 
-        public GetHttpRequestBuilderCommand(string methodName)
+        public GetHttpRequestBuilderCommand(string methodName, IRequestSerializer requestSerializer)
         {
             _methodName = methodName;
+            _requestSerializer = requestSerializer;
         }
 
         public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
@@ -24,12 +26,12 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             var result = await DoGet(url, parameters);
             try
             {
-                return JsonConvert.DeserializeObject<TReturnType>(result);
+                return _requestSerializer.DeserializeObject<TReturnType>(result);
             }
             catch (JsonSerializationException)
             {
                 // retry as an array 
-                return JsonConvert.DeserializeObject<IEnumerable<TReturnType>>(result).First();
+                return _requestSerializer.DeserializeObject<IEnumerable<TReturnType>>(result).First();
             }
         }
 

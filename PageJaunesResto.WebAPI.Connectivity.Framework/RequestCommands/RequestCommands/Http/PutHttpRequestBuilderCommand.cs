@@ -12,17 +12,19 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
     public class PutHttpRequestBuilderCommand : IRequestBuilderCommand
     {
         private readonly string _methodName;
+        private readonly IRequestSerializer _requestSerializer;
 
-        public PutHttpRequestBuilderCommand(string methodName)
+        public PutHttpRequestBuilderCommand(string methodName, IRequestSerializer requestSerializer)
         {
             _methodName = methodName;
+            _requestSerializer = requestSerializer;
         }
 
         public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
         {
             var result = await MakeRequest(url, parameters);
 
-            return JsonConvert.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
+            return _requestSerializer.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
         }
 
         public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)
@@ -47,7 +49,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             var postItem = parameters.First(x => !(x.Value is string || x.Value is Guid || x.Value is int));
 
             var content =
-                new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>(postItem.Key, JsonConvert.SerializeObject(postItem.Value)) });
+                new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>(postItem.Key, _requestSerializer.SerializeObject(postItem.Value)) });
 
             return await request.PutAsync(uri, content);
         }

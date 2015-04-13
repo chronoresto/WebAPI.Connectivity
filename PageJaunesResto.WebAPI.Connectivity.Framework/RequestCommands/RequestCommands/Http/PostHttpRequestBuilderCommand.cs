@@ -15,17 +15,19 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
     public class PostHttpRequestBuilderCommand : IRequestBuilderCommand
     {
         private readonly string _methodName;
+        private readonly IRequestSerializer _requestSerializer;
 
-        public PostHttpRequestBuilderCommand(string methodName)
+        public PostHttpRequestBuilderCommand(string methodName, IRequestSerializer requestSerializer)
         {
             _methodName = methodName;
+            _requestSerializer = requestSerializer;
         }
 
         public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
         {
             var result = await MakeRequest(url, parameters);
 
-            return JsonConvert.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
+            return _requestSerializer.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
         }
 
         public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)
@@ -48,7 +50,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
 
             var postItem = parameters.First(x => !UriBuildingHelpers.IsSimpleType(x));
 
-            var content = new StringContent(JsonConvert.SerializeObject(postItem.Value), Encoding.UTF8, "application/json");
+            var content = new StringContent(_requestSerializer.SerializeObject(postItem.Value), Encoding.UTF8, "application/json");
 
             return await request.PostAsync(uri, content);
         }
