@@ -22,6 +22,8 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             var request = new HttpClient();
             Uri uri = new Uri(url);
 
+            uri = new Uri(uri + _methodName.ToLower());
+
             if (parameters.Any())
                 uri = UriBuildingHelpers.AttachParameters(uri, parameters.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
 
@@ -34,6 +36,8 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
         {
             var request = new HttpClient();
             Uri uri = new Uri(url);
+
+            uri = new Uri(uri + _methodName.ToLower());
 
             if (parameters.Any())
                 uri = UriBuildingHelpers.AttachParameters(uri, parameters.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
