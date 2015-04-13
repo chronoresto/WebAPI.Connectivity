@@ -34,13 +34,13 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.Helpers
                 return ((DateTime)x.Value).ToString(CultureInfo.InvariantCulture);
 
             if (x.Value is float)
-                return ((float)x.Value).ToString(CultureInfo.InvariantCulture);
+                return ((float)x.Value).ToString(CultureInfo.InvariantCulture.NumberFormat);
 
             if (x.Value is double)
-                return ((double)x.Value).ToString(CultureInfo.InvariantCulture);
+                return ((double)x.Value).ToString(CultureInfo.InvariantCulture.NumberFormat);
 
             if (x.Value is decimal)
-                return ((decimal)x.Value).ToString(CultureInfo.InvariantCulture);
+                return ((decimal)x.Value).ToString(CultureInfo.InvariantCulture.NumberFormat);
 
             return x.Value.ToString();
         }
