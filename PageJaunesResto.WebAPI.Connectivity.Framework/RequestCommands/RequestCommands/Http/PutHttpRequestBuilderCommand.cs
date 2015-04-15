@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -49,7 +50,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             var postItem = parameters.First(x => !(x.Value is string || x.Value is Guid || x.Value is int));
 
             var content =
-                new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>(postItem.Key, _requestSerializer.SerializeObject(postItem.Value)) });
+                new StringContent(_requestSerializer.SerializeObject(postItem.Value), Encoding.UTF8, "application/json");
 
             return await request.PutAsync(uri, content);
         }
