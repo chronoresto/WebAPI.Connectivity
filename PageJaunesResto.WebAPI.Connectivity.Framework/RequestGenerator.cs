@@ -17,9 +17,9 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
 {
     public class RequestGenerator : IRequestGenerator
     {
-        private readonly string _baseUrl;
         private readonly IEnumerable<KeyValuePair<string, object>> _defaultParams;
         private readonly IRequestBuilderCommandFactory _requestBuilderCommandFactory;
+        public string BaseUrl { get; set; }
 
         public RequestGenerator(string baseUrl)
             : this(baseUrl, new List<KeyValuePair<string, object>>(), new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy(), new JsonRequestSerializer()))
@@ -28,10 +28,10 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
 
         public RequestGenerator(string baseUrl, IEnumerable<KeyValuePair<string, object>> defaultParams, IRequestBuilderCommandFactory requestBuilderCommandFactory)
         {
-            _baseUrl = baseUrl;
+            BaseUrl = baseUrl;
             _defaultParams = defaultParams;
             _requestBuilderCommandFactory = requestBuilderCommandFactory;
-        }
+        }        
 
         public async Task<TReturnType> InterfaceAndMethodToRequest<T, TReturnType>(Expression<Func<T, TReturnType>> action)
         {
@@ -48,7 +48,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
             var paramsToGo = _defaultParams.ToList();
             paramsToGo.AddRange(paramsToPass);
 
-            return await requestBuilder.BuildRequest<TReturnType>(_baseUrl, paramsToGo.ToArray());
+            return await requestBuilder.BuildRequest<TReturnType>(BaseUrl, paramsToGo.ToArray());
         }
 
         public async Task InterfaceAndMethodToRequest<T>(Expression<Action<T>> action)
@@ -66,7 +66,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
             var paramsToGo = _defaultParams.ToList();
             paramsToGo.AddRange(paramsToPass);
 
-            await requestBuilder.BuildRequest(_baseUrl, paramsToGo.ToArray());
+            await requestBuilder.BuildRequest(BaseUrl, paramsToGo.ToArray());
         }
     }
 
