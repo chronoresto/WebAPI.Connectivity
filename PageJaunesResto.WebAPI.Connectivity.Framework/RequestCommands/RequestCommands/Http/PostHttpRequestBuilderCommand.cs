@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using PageJaunesResto.WebAPI.Connectivity.Framework.Helpers;
 
 namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestCommands.Http
@@ -48,7 +49,10 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
                     parameters.Where(UriBuildingHelpers.IsSimpleType)
                         .Select(x => new KeyValuePair<string, string>(x.Key, UriBuildingHelpers.SimpleTypeToString(x))).ToArray());
 
-            var postItem = parameters.First(x => !UriBuildingHelpers.IsSimpleType(x));
+            var postItem = parameters.FirstOrDefault(x => !UriBuildingHelpers.IsSimpleType(x));
+
+            Debug.WriteLine(uri.ToString() + "\r\n " +
+                            parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
 
             var content = new StringContent(_requestSerializer.SerializeObject(postItem.Value), Encoding.UTF8, "application/json");
 
