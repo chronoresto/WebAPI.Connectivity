@@ -48,10 +48,11 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
                     parameters.Where(x => x.Value is string || x.Value is Guid || x.Value is int)
                         .Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
 
-            var postItem = parameters.First(x => !(x.Value is string || x.Value is Guid || x.Value is int));
+            var postItem = parameters.FirstOrDefault(x => !UriBuildingHelpers.IsSimpleType(x));
 
             Debug.WriteLine(uri.ToString() + "\r\n " +
                             parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
+
             var content =
                 new StringContent(_requestSerializer.SerializeObject(postItem.Value), Encoding.UTF8, "application/json");
 
