@@ -28,7 +28,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.VerbPref
 
         public IEnumerable<string> GetPutPrefixs()
         {
-            return  new[] { "Add" };
+            return  new[] { "Add", "Clear" };
         }
     }
 }
