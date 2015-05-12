@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -49,6 +50,8 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
 
             var postItem = parameters.First(x => !(x.Value is string || x.Value is Guid || x.Value is int));
 
+            Debug.WriteLine(uri.ToString() + "\r\n " +
+                            parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
             var content =
                 new StringContent(_requestSerializer.SerializeObject(postItem.Value), Encoding.UTF8, "application/json");
 
