@@ -24,6 +24,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
         public RequestGenerator(string baseUrl)
             : this(baseUrl, new List<KeyValuePair<string, object>>(), new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy(), new JsonRequestSerializer()))
         {
+
         }
 
         public RequestGenerator(string baseUrl, IEnumerable<KeyValuePair<string, object>> defaultParams, IRequestBuilderCommandFactory requestBuilderCommandFactory)
@@ -33,7 +34,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
             _requestBuilderCommandFactory = requestBuilderCommandFactory;
         }        
 
-        public async Task<TReturnType> InterfaceAndMethodToRequest<T, TReturnType>(Expression<Func<T, TReturnType>> action)
+        public async Task<TReturnType> InterfaceAndMethodToRequest<T, TReturnType>(Expression<Func<T, TReturnType>> action, int timeoutSeconds = 15)
         {
             var methodBody = ((MethodCallExpression)action.Body);
 
@@ -48,10 +49,10 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
             var paramsToGo = _defaultParams.ToList();
             paramsToGo.AddRange(paramsToPass);
 
-            return await requestBuilder.BuildRequest<TReturnType>(BaseUrl, paramsToGo.ToArray());
+            return await requestBuilder.BuildRequest<TReturnType>(BaseUrl, timeoutSeconds, paramsToGo.ToArray());
         }
 
-        public async Task InterfaceAndMethodToRequest<T>(Expression<Action<T>> action)
+        public async Task InterfaceAndMethodToRequest<T>(Expression<Action<T>> action, int timeoutSeconds = 15)
         {
             var methodBody = ((MethodCallExpression)action.Body);
 
@@ -66,8 +67,13 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
             var paramsToGo = _defaultParams.ToList();
             paramsToGo.AddRange(paramsToPass);
 
-            await requestBuilder.BuildRequest(BaseUrl, paramsToGo.ToArray());
+            await requestBuilder.BuildRequest(BaseUrl, timeoutSeconds, paramsToGo.ToArray());
         }
+
+        public void SetBaseUrl(string baseUrl)
+        {
+            BaseUrl = baseUrl;
+        }     
     }
 
     public class JsonRequestSerializer : IRequestSerializer
