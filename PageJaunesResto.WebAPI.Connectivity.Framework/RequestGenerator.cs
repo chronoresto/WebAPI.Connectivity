@@ -20,15 +20,18 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
         private readonly IEnumerable<KeyValuePair<string, object>> _defaultParams;
         private readonly IRequestBuilderCommandFactory _requestBuilderCommandFactory;
         public string BaseUrl { get; set; }
+        public int TimeoutSeconds { get; set; }
 
-        public RequestGenerator(string baseUrl)
-            : this(baseUrl, new List<KeyValuePair<string, object>>(), new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy(), new JsonRequestSerializer()))
+        public RequestGenerator(string baseUrl, int timeoutSeconds = 15)
+            : this(baseUrl, timeoutSeconds, new List<KeyValuePair<string, object>>(), new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy(), new JsonRequestSerializer()))
         {
+
         }
 
-        public RequestGenerator(string baseUrl, IEnumerable<KeyValuePair<string, object>> defaultParams, IRequestBuilderCommandFactory requestBuilderCommandFactory)
+        public RequestGenerator(string baseUrl, int timeoutSeconds, IEnumerable<KeyValuePair<string, object>> defaultParams, IRequestBuilderCommandFactory requestBuilderCommandFactory)
         {
             BaseUrl = baseUrl;
+            TimeoutSeconds = timeoutSeconds;
             _defaultParams = defaultParams;
             _requestBuilderCommandFactory = requestBuilderCommandFactory;
         }        
@@ -48,7 +51,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
             var paramsToGo = _defaultParams.ToList();
             paramsToGo.AddRange(paramsToPass);
 
-            return await requestBuilder.BuildRequest<TReturnType>(BaseUrl, paramsToGo.ToArray());
+            return await requestBuilder.BuildRequest<TReturnType>(BaseUrl, TimeoutSeconds, paramsToGo.ToArray());
         }
 
         public async Task InterfaceAndMethodToRequest<T>(Expression<Action<T>> action)
@@ -66,8 +69,18 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
             var paramsToGo = _defaultParams.ToList();
             paramsToGo.AddRange(paramsToPass);
 
-            await requestBuilder.BuildRequest(BaseUrl, paramsToGo.ToArray());
+            await requestBuilder.BuildRequest(BaseUrl, TimeoutSeconds, paramsToGo.ToArray());
         }
+
+        public void SetBaseUrl(string baseUrl)
+        {
+            BaseUrl = baseUrl;
+        }
+
+        public void SetTimeoutSeconds(int timeoutSeconds = 15)
+        {
+            TimeoutSeconds = timeoutSeconds;
+        }        
     }
 
     public class JsonRequestSerializer : IRequestSerializer

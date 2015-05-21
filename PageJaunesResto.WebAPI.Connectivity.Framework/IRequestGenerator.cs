@@ -8,5 +8,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
     {
         Task<TReturnType> InterfaceAndMethodToRequest<T, TReturnType>(Expression<Func<T, TReturnType>> action);
         Task InterfaceAndMethodToRequest<T>(Expression<Action<T>> action);
+        void SetBaseUrl(string baseUrl);
+        void SetTimeoutSeconds(int timeoutSeconds = 15);
     }
 }
