@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NUnit.Framework;
 using PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle.API;
 using PageJaunesResto.WebAPI.Connectivity.Framework;
@@ -17,7 +18,7 @@ namespace PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle
             const string baseUri = "http://jsonplaceholder.typicode.com/";
 
             // act
-            await new RequestGenerator(baseUri, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy()))
+            await new RequestGenerator(baseUri, new [] { new KeyValuePair<string, object>() }, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy(), new JsonRequestSerializer()))
                 .InterfaceAndMethodToRequest<IPosts>(x => x.Delete());
         }
     }

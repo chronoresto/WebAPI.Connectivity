@@ -11,29 +11,36 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
     public class DeleteHttpRequestBuilderCommand : IRequestBuilderCommand
     {
         private readonly string _methodName;
+        private readonly IRequestSerializer _requestSerializer;
 
-        public DeleteHttpRequestBuilderCommand(string methodName)
+        public DeleteHttpRequestBuilderCommand(string methodName, IRequestSerializer requestSerializer)
         {
             _methodName = methodName;
+            _requestSerializer = requestSerializer;
         }
 
-        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
+        public async Task<TReturnType> BuildRequest<TReturnType>(string url, int timeoutSeconds, params KeyValuePair<string, object>[] parameters)
         {
-            var request = new HttpClient();
+            var request = new HttpClient { Timeout = new TimeSpan(0, 0, timeoutSeconds) };
             Uri uri = new Uri(url);
+
+            uri = new Uri(uri + _methodName.ToLower());
 
             if (parameters.Any())
                 uri = UriBuildingHelpers.AttachParameters(uri, parameters.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
 
             var result = await request.DeleteAsync(uri);
 
-            return JsonConvert.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
+            return _requestSerializer.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
         }
 
-        public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)
+        public async Task BuildRequest(string url, int timeoutSeconds, params KeyValuePair<string, object>[] parameters)
         {
-            var request = new HttpClient();
+            var request = new HttpClient {Timeout = new TimeSpan(0, 0, timeoutSeconds)};
+
             Uri uri = new Uri(url);
+
+            uri = new Uri(uri + _methodName.ToLower());
 
             if (parameters.Any())
                 uri = UriBuildingHelpers.AttachParameters(uri, parameters.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());

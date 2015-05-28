@@ -29,14 +29,14 @@ namespace PageJaunesResto.WebAPI.Connectivity.Frameworks.Tests
 
             // Act
             var result = (expression.Body as MethodCallExpression).GetKeyValuePairsFromParametersInMethodCallExpression();
-            var keyValuePairs = result as KeyValuePair<string, string>[] ?? result.ToArray();
+            var keyValuePairs = result as KeyValuePair<string, object>[] ?? result.ToArray();
 
             // Assert
             Assert.That(keyValuePairs.First().Key, Is.EqualTo("a"));
-            Assert.That(keyValuePairs.First().Value, Is.EqualTo(stringParam));
+            Assert.That(keyValuePairs.First().Value.ToString(), Is.EqualTo(stringParam));
 
             Assert.That(keyValuePairs.ElementAt(1).Key, Is.EqualTo("b"));
-            Assert.That(keyValuePairs.ElementAt(1).Value, Is.EqualTo(intParam.ToString()));
+            Assert.That(keyValuePairs.ElementAt(1).Value.ToString(), Is.EqualTo(intParam.ToString()));
         }
 
     }

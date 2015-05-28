@@ -25,6 +25,8 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.Helpers
                 var key = "";
                 if (name != null)
                     key = name.Name;
+                if (name != null && name.Name.Contains("_DOT_"))
+                    key = name.Name.Replace("_DOT_", ".");
 
                 object value = null;
                 if (paramValue != null)

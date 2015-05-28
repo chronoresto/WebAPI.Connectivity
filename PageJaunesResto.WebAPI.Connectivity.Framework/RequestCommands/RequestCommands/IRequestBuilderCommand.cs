@@ -5,7 +5,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
 {
     public interface IRequestBuilderCommand
     {
-        Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters);
-        Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters);
+        Task<TReturnType> BuildRequest<TReturnType>(string url, int timeoutSeconds, params KeyValuePair<string, object>[] parameters);
+        Task BuildRequest(string url, int timeoutSeconds, params KeyValuePair<string, object>[] parameters);
     }
 }
