@@ -24,6 +24,9 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
         public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
         {
             var result = await DoGet(url, parameters);
+
+            Debug.WriteLine(result);
+
             try
             {
                 return _requestSerializer.DeserializeObject<TReturnType>(result);

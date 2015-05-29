@@ -26,7 +26,10 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
         {
             var result = await MakeRequest(url, parameters);
 
-            return _requestSerializer.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
+            var stringResult = await result.Content.ReadAsStringAsync();
+            Debug.WriteLine(stringResult);
+
+            return _requestSerializer.DeserializeObject<TReturnType>(stringResult);
         }
 
         public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)
