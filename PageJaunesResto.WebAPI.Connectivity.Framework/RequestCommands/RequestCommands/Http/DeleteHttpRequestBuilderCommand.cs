@@ -20,9 +20,9 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             _requestSerializer = requestSerializer;
         }
 
-        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
+        public async Task<TReturnType> BuildRequest<TReturnType>(string url, int timeoutSeconds, params KeyValuePair<string, object>[] parameters)
         {
-            var request = new HttpClient();
+            var request = new HttpClient { Timeout = new TimeSpan(0, 0, timeoutSeconds) };
             Uri uri = new Uri(url);
 
             uri = new Uri(uri + _methodName.ToLower());
@@ -38,9 +38,10 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             return _requestSerializer.DeserializeObject<TReturnType>(stringResult);
         }
 
-        public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)
+        public async Task BuildRequest(string url, int timeoutSeconds, params KeyValuePair<string, object>[] parameters)
         {
-            var request = new HttpClient();
+            var request = new HttpClient {Timeout = new TimeSpan(0, 0, timeoutSeconds)};
+
             Uri uri = new Uri(url);
 
             uri = new Uri(uri + _methodName.ToLower());

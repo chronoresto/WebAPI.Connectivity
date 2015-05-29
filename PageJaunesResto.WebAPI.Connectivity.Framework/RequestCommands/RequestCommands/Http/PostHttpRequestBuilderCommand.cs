@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using Newtonsoft.Json;
-using System.Diagnostics;
 using PageJaunesResto.WebAPI.Connectivity.Framework.Helpers;
 
 namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestCommands.Http
@@ -24,9 +20,9 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             _requestSerializer = requestSerializer;
         }
 
-        public async Task<TReturnType> BuildRequest<TReturnType>(string url, params KeyValuePair<string, object>[] parameters)
+        public async Task<TReturnType> BuildRequest<TReturnType>(string url, int timeoutSeconds, params KeyValuePair<string, object>[] parameters)
         {
-            var result = await MakeRequest(url, parameters);
+            var result = await MakeRequest(url, timeoutSeconds, parameters);
 
             var stringResult = await result.Content.ReadAsStringAsync(); 
             Debug.WriteLine(stringResult);
@@ -34,18 +30,17 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             return _requestSerializer.DeserializeObject<TReturnType>(stringResult);
         }
 
-        public async Task BuildRequest(string url, params KeyValuePair<string, object>[] parameters)
+        public async Task BuildRequest(string url, int timeoutSeconds, params KeyValuePair<string, object>[] parameters)
         {
-            await MakeRequest(url, parameters);
+            await MakeRequest(url, timeoutSeconds, parameters);
         }
 
-        private async Task<HttpResponseMessage> MakeRequest(string url, KeyValuePair<string, object>[] parameters)
+        private async Task<HttpResponseMessage> MakeRequest(string url, int timeoutSeconds, KeyValuePair<string, object>[] parameters)
         {
-            var request = new HttpClient();
+            var request = new HttpClient { Timeout = new TimeSpan(0, 0, timeoutSeconds) };
             Uri uri = new Uri(url);
 
             uri = new Uri(uri + _methodName.ToLower());
-
 
             if (parameters.Any())
                 uri = UriBuildingHelpers.AttachParameters(uri,
