@@ -58,10 +58,12 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
                         .ToArray());
 
             Debug.WriteLine(uri.ToString() + "\r\n " +
-                            parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
+                            parameters
+                        .Where(x => x.Key != null && x.Value != null).Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
             var result = await request.GetStringAsync(uri);
             Debug.WriteLine(uri.ToString() + "SUCCESS \r\n " +
-                            parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
+                            parameters
+                        .Where(x => x.Key != null && x.Value != null).Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
 
             return result;
         }
