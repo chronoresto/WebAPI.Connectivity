@@ -52,8 +52,9 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
 
             if (parameters.Any())
                 uri = UriBuildingHelpers.AttachParameters(uri,
-                    parameters.Select(
-                        x => new KeyValuePair<string, string>(x.Key, UriBuildingHelpers.SimpleTypeToString(x)))
+                    parameters
+                        .Where(x => x.Key != null && x.Value != null)
+                        .Select(x => new KeyValuePair<string, string>(x.Key, UriBuildingHelpers.SimpleTypeToString(x)))
                         .ToArray());
 
             Debug.WriteLine(uri.ToString() + "\r\n " +

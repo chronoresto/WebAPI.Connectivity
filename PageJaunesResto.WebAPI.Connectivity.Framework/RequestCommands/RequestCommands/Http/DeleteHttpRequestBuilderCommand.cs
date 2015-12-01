@@ -28,7 +28,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             uri = new Uri(uri + _methodName.ToLower());
 
             if (parameters.Any())
-                uri = UriBuildingHelpers.AttachParameters(uri, parameters.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
+                uri = UriBuildingHelpers.AttachParameters(uri, parameters.Where(x => x.Key != null && x.Value != null).Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
 
             var result = await request.DeleteAsync(uri);
 
@@ -47,7 +47,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             uri = new Uri(uri + _methodName.ToLower());
 
             if (parameters.Any())
-                uri = UriBuildingHelpers.AttachParameters(uri, parameters.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
+                uri = UriBuildingHelpers.AttachParameters(uri, parameters.Where(x => x.Key != null && x.Value != null).Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
 
             await request.DeleteAsync(uri);
         }

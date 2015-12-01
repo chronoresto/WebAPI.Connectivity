@@ -45,6 +45,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             if (parameters.Any())
                 uri = UriBuildingHelpers.AttachParameters(uri,
                     parameters.Where(UriBuildingHelpers.IsSimpleType)
+                        .Where(x => x.Key != null && x.Value != null)
                         .Select(x => new KeyValuePair<string, string>(x.Key, UriBuildingHelpers.SimpleTypeToString(x))).ToArray());
 
             var postItem = parameters.FirstOrDefault(x => !UriBuildingHelpers.IsSimpleType(x));
