@@ -46,7 +46,9 @@ namespace PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle
         {
             var res = await new PagesJaunesApiRequestGenerator()
                 .InterfaceAndMethodToRequest<ICatalogController, ResponseBase<RestaurantResponse[]>>(x => x.GetRestaurants("75017", 1, null, null, null, null, null, null, 0, null, null,
-                                    null, null, null, "center"));
+                                    null, null, null, "center"), 150);
+
+            Assert.That(res.Result.First().Address, Is.Not.Null);
         }
     }
     [TestFixture]

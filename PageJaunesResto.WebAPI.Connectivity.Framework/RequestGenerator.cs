@@ -52,7 +52,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework
             return await requestBuilder.BuildRequest<TReturnType>(BaseUrl, timeoutSeconds, paramsToGo.ToArray());
         }
 
-        public async Task InterfaceAndMethodToRequest<T>(Expression<Action<T>> action, int timeoutSeconds = 15)
+        public async Task InterfaceAndMethodToRequest<T>(Expression<Action<T>> action, int timeoutSeconds = 45)
         {
             var methodBody = ((MethodCallExpression)action.Body);
 
