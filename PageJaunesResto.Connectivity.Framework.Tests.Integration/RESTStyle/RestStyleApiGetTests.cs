@@ -132,5 +132,16 @@ namespace PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle
 
             Assert.That(result, Is.Not.Null);
         }
+
+        [Test]
+        public async void create()
+        {
+            var result = await new RequestGenerator("http://pagesjaunesresto-grood-apibranch.azurewebsites.net/api/", new[] { new KeyValuePair<string, object>() }, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy(), new JsonRequestSerializer()))
+                                                 .InterfaceAndMethodToRequest<IGroodFlattenedController, GroodFlattened>(
+                   x => x.Post(new GroodFlattened() { RestaurantName = "peter"}));
+
+            Assert.That(result, Is.Not.Null);
+
+        }
     }
 }

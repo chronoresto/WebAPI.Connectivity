@@ -47,6 +47,9 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.Helpers
 
         public static bool IsSimpleType(KeyValuePair<string, object> x)
         {
+            if (x.Value == null || x.Key == null)
+                return false;
+
             return x.Value is string || x.Value is Guid || x.Value is int || x.Value.GetType().GetTypeInfo().IsValueType;
         }
     }
