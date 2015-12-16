@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle.API;
@@ -82,6 +83,54 @@ namespace PageJaunesResto.Connectivity.Framework.Tests.Integration.RESTStyle
             Assert.That(result.Id, Is.EqualTo(1));
             Assert.That(result.UserId, Is.EqualTo(1));
             Assert.That(result.Title, Is.EqualTo("sunt aut facere repellat provident occaecati excepturi optio reprehenderit"));
+        }
+    }
+
+    [TestFixture]
+    public class GroodStyleApiTests
+    {
+        public class GroodFlattened
+        {
+            public int GroodGuid { get; set; }
+            public DateTime DateCreated { get; set; }
+            public bool WhenAsap { get; set; }
+            public DateTime DeliveryDate { get; set; }
+            public int Status { get; set; }
+
+            public Guid RestaurantGuid { get; set; }
+            public string RestaurantName { get; set; }
+            public string RestaurantImage { get; set; }
+
+            public bool Private { get; set; }
+            public string LeaderMessage { get; set; }
+
+            public Guid DeliveryAddressGuid { get; set; }
+            public Guid DeliveryAddressPlaceId { get; set; } // todo add on create grood, speeds up look ups
+
+            public float Lat { get; set; }
+            // Unrolled access to lat, lng 
+            public float Lng { get; set; }
+
+            public int CountdownSeconds { get; set; }
+            public int JoinCode { get; set; }
+
+        }
+
+        public interface IGroodFlattenedController
+        {
+            GroodFlattened Post(GroodFlattened groodFlattened);
+            GroodFlattened Get(int id);
+            GroodFlattened[] Get();
+        }
+
+        [Test]
+        public async void get()
+        {
+            var result = await new RequestGenerator("http://pagesjaunesresto-grood-apibranch.azurewebsites.net/api/", new[] { new KeyValuePair<string, object>() }, new RequestBuilderCommandFactory(new DefaultRestVerbPrefixes(), new RestStyleNamingStrategy(), new JsonRequestSerializer()))
+                                                          .InterfaceAndMethodToRequest<IGroodFlattenedController, GroodFlattened[]>(
+                            x => x.Get());
+
+            Assert.That(result, Is.Not.Null);
         }
     }
 }
