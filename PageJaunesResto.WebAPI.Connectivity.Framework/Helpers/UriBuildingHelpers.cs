@@ -17,6 +17,10 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.Helpers
             {
                 if (!string.IsNullOrWhiteSpace(parameters.ElementAt(index).Value))
                 {
+					var key = parameters.ElementAt (index).Key;
+					if (key.Contains ("__DOT__"))
+						key = key.Replace ("__DOT__", ".");
+					
                     stringBuilder.Append(str + parameters.ElementAt(index).Key + "=" + parameters.ElementAt(index).Value);
                     str = "&";
                 }
