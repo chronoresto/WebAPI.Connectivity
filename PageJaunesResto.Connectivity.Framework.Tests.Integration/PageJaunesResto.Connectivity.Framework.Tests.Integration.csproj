@@ -12,7 +12,6 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +46,7 @@
     <Compile Include="RESTStyle\API\IPosts.cs" />
     <Compile Include="RESTStyle\API\Post.cs" />
     <Compile Include="RESTStyle\RestStyleApiDeleteTests.cs" />
+    <Compile Include="RESTStyle\RestStyleApiGetListParameterTests.cs" />
     <Compile Include="RESTStyle\RestStyleApiGetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

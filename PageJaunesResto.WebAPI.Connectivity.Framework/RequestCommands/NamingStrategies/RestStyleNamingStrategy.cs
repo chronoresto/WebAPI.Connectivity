@@ -5,8 +5,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.NamingSt
         public string GetBaseName(string className, string methodName)
         {
             // throw away method name, only used for identitfication here
-
-            return className;
+            return className.EndsWith("Controller") ? className.Replace("Controller", "") : className;
         }
     }
 }

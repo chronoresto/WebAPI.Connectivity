@@ -24,6 +24,9 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
         public async Task<TReturnType> BuildRequest<TReturnType>(string url, int timeoutSeconds, params KeyValuePair<string, object>[] parameters)
         {
             var result = await DoGet(url, timeoutSeconds, parameters);
+
+            Debug.WriteLine(result);
+
             try
             {
                 return _requestSerializer.DeserializeObject<TReturnType>(result);
@@ -48,16 +51,31 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             uri = new Uri(uri + _methodName.ToLower());
 
             if (parameters.Any())
-                uri = UriBuildingHelpers.AttachParameters(uri,
-                    parameters.Select(
-                        x => new KeyValuePair<string, string>(x.Key, UriBuildingHelpers.SimpleTypeToString(x)))
-                        .ToArray());
+            {
+                // Get all simple Type Parameters 
+                var simpleTypeParameters = parameters
+                    .Where(x => x.Key != null && x.Value != null && UriBuildingHelpers.IsSimpleType(x))
+                    .Select(x => new KeyValuePair<string, string>(x.Key, UriBuildingHelpers.SimpleTypeToString(x)))
+                    .ToArray();
+                // Add simple type parameters to Uri
+                uri = UriBuildingHelpers.AttachParameters(uri, simpleTypeParameters);
 
+                // Get all non-simple type parameters
+                var enumerableParameters =
+                    parameters.Where(x => x.Key != null && x.Value != null && !UriBuildingHelpers.IsSimpleType(x))
+                        .Select(x => new KeyValuePair<string, string>(x.Key, UriBuildingHelpers.EnumerableTypeToString(x)))
+                        .ToArray();
+
+                // Add all non-simple paramters to uri
+                uri = UriBuildingHelpers.AttachParameters(uri, enumerableParameters);
+            }
             Debug.WriteLine(uri.ToString() + "\r\n " +
-                            parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
-            var result = await request.GetStringAsync(uri);
+                            parameters
+                        .Where(x => x.Key != null && x.Value != null).Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
+            var result = await request.GetStringAsync(uri);            
             Debug.WriteLine(uri.ToString() + "SUCCESS \r\n " +
-                            parameters.Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
+                            parameters
+                        .Where(x => x.Key != null && x.Value != null).Aggregate(string.Empty, (x, y) => x + (y.Key + " " + y.Value + "\r\n")));
 
             return result;
         }

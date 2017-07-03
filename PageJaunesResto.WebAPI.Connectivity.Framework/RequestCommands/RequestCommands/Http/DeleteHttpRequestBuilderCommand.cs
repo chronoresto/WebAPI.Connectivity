@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -27,11 +28,14 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             uri = new Uri(uri + _methodName.ToLower());
 
             if (parameters.Any())
-                uri = UriBuildingHelpers.AttachParameters(uri, parameters.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
+                uri = UriBuildingHelpers.AttachParameters(uri, parameters.Where(x => x.Key != null && x.Value != null).Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
 
             var result = await request.DeleteAsync(uri);
 
-            return _requestSerializer.DeserializeObject<TReturnType>(await result.Content.ReadAsStringAsync());
+            var stringResult = await result.Content.ReadAsStringAsync();
+            Debug.WriteLine(stringResult);
+
+            return _requestSerializer.DeserializeObject<TReturnType>(stringResult);
         }
 
         public async Task BuildRequest(string url, int timeoutSeconds, params KeyValuePair<string, object>[] parameters)
@@ -43,7 +47,7 @@ namespace PageJaunesResto.WebAPI.Connectivity.Framework.RequestCommands.RequestC
             uri = new Uri(uri + _methodName.ToLower());
 
             if (parameters.Any())
-                uri = UriBuildingHelpers.AttachParameters(uri, parameters.Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
+                uri = UriBuildingHelpers.AttachParameters(uri, parameters.Where(x => x.Key != null && x.Value != null).Select(x => new KeyValuePair<string, string>(x.Key, x.Value.ToString())).ToArray());
 
             await request.DeleteAsync(uri);
         }
